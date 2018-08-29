@@ -11,6 +11,9 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Log extends Model
 {
+
+    const STATUS_UPDATE = 0;
+    const ASSINGN_UPDATE = 1;
     /**
      * The attributes that are mass assignable.
      *

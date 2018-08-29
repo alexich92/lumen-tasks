@@ -35,6 +35,8 @@ $router->group(['namespace' => API_VERSION, 'prefix' => API_VERSION, 'middleware
 
 /** Routes with auth */
 $router->group(['namespace' => API_VERSION, 'prefix' => API_VERSION, 'middleware' => 'cors|jwt'], function () use ($router) {
+    $router->get('/users', ['uses' => 'AdminController@getUsers']);
+    $router->get('/notifications/{id}', ['uses' => 'TaskController@getNotifications']);
     $router->group(['prefix' => 'user'], function () use ($router) {
         $router->get('/', ['uses' => 'UserController@get']);
         $router->patch('/', ['uses' => 'UserController@update']);
@@ -50,9 +52,15 @@ $router->group(['namespace' => API_VERSION, 'prefix' => API_VERSION, 'middleware
     });
 
     $router->get('/tasks', ['uses' => 'TaskController@getAll']);
-    $router->group(['prefix' => 'user'], function () use ($router) {
+    $router->get('/notifications/{id}', ['uses' => 'TaskController@getNotifications']);
+
+    $router->group(['prefix' => 'task'], function () use ($router) {
         $router->post('/', ['uses' => 'TaskController@create']);
+        $router->get('/{id}', ['uses' => 'TaskController@showTask']);
         $router->patch('/{id}', ['uses' => 'TaskController@update']);
         $router->delete('/{id}', ['uses' => 'TaskController@delete']);
+        $router->post('/{id}/comment', ['uses' => 'TaskController@addComment']);
+        $router->get('/{id}/comments', ['uses' => 'TaskController@getComments']);
+        $router->get('/{id}/logs', ['uses' => 'TaskController@getLogs']);
     });
 });
